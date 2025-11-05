@@ -98,9 +98,9 @@ public class CSArrayList<E>
             reallocate();
         }
         theData[size] = anEntry;
-        size++;
-        modCount++;  // PART B
-        return true;
+        size++;  // increase the logical size of list by 1
+        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
+        return true;  // returns true to confirm the element was added successfully
     }
 
     /**
@@ -109,9 +109,11 @@ public class CSArrayList<E>
      * @param anEntry The value to be added to the list.
      */
     public void add (int index, E anEntry) {
+        // Validate that index is within [0, size]
         if (index < 0 || index > size) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
+        // if array is full, double its capacity
         if (size == capacity) {
             reallocate();
         }
@@ -119,10 +121,9 @@ public class CSArrayList<E>
         for (int i = size; i > index; i--) {
             theData[i] = theData[i - 1];
         }
-        // Insert the new item.
-        theData[index] = anEntry;
+        theData[index] = anEntry;  // Insert the new item.
         size++;
-        modCount++;  // PART B
+        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
     }
     /**
      * Get a value in the array based on its index.
@@ -135,10 +136,11 @@ public class CSArrayList<E>
 
     @Override
     public E get(int index) {
+        // Validate the index
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        return theData[index];
+        return theData[index];  // return the element at that position
     }
 
     /**
@@ -152,12 +154,13 @@ public class CSArrayList<E>
      */
     @Override
     public E set(int index, E newValue) {
+        // Validate the index
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        E oldValue = theData[index];
-        theData[index] = newValue;
-        return oldValue;
+        E oldValue = theData[index];  // save the old value for return
+        theData[index] = newValue;  // replace with new value
+        return oldValue;  // return the value that was replaced
     }
 
     /**
@@ -170,24 +173,25 @@ public class CSArrayList<E>
      */
     @Override
     public E remove(int index) {
+        // Validate index
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        E returnValue = theData[index];
-        for (int i = index + 1; i < size; i++) {
+        E returnValue = theData[index];  // store the value being removed
+        for (int i = index + 1; i < size; i++) {  // shift everything left from index +1
             theData[i - 1] = theData[i];
         }
-        size--;
-        modCount++;  // PART B
-        return returnValue;
+        size--;  // decrease size to forget the last element
+        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
+        return returnValue;  // return the removed value
     }
 
     /**
      * Allocate a new array that is twice the size of the current array. Copies the contents of the current array to the new one using .copyOf
      */
     private void reallocate() {
-        capacity = 2 * capacity;
-        theData = Arrays.copyOf(theData, capacity);
+        capacity = 2 * capacity;  // double the capacity
+        theData = Arrays.copyOf(theData, capacity); // copy all existing elements into new larger array
     }
 
     /**
@@ -196,7 +200,7 @@ public class CSArrayList<E>
      */
     @Override
     public int size() {
-        return size;
+        return size;  // returns how many elements are currently stored
     }
 
     /**
@@ -240,7 +244,7 @@ public class CSArrayList<E>
             theData[i] = null;
         }
         size = 0;
-        modCount++;  // PART BConcurrentModificationException
+        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
     }
 
     @Override
@@ -294,7 +298,7 @@ public class CSArrayList<E>
             theData[index + 1] = (E) newElements[i];
         }
         size+= numNew;
-        modCount++;
+        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
         return true;
     }
 }
