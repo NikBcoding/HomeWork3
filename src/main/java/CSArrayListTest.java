@@ -15,7 +15,7 @@ public class CSArrayListTest {
         try {
             for (String s : testCollection) {
                 System.out.println(s);
-                if (s.equals("B")) {
+                if (s.equals("C")) {
                     testCollection.add("D");  // modification
                 }
             }
@@ -25,7 +25,7 @@ public class CSArrayListTest {
 
         // -- removal (Object) --
         testCollection.remove("B");
-        System.out.println("After removing(B): " + testCollection);  // [A,C]
+        System.out.println("After removing(B): " + testCollection);  // [A,C,D]
 
         // -- isEmpty() --
         System.out.println("Is Empty? " + "(" + testCollection.isEmpty() + ")");  // false

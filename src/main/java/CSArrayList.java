@@ -298,7 +298,6 @@ public class CSArrayList<E>
             theData[index + 1] = (E) newElements[i];
         }
         size+= numNew;
-        modCount++;  // increment mod count, used for fail-fast iterator (PART B)
         return true;
     }
 }
