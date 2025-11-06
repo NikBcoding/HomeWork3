@@ -108,19 +108,20 @@ public class CSArrayList<E>
      * @param index - The index of the item desired
      * @param anEntry The value to be added to the list.
      */
+    @Override
     public void add (int index, E anEntry) {
         // Validate that index is within [0, size]
         if (index < 0 || index > size) {
-            throw new ArrayIndexOutOfBoundsException(index);
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
         }
         // if array is full, double its capacity
-        if (size == capacity) {
-            reallocate();
+        ensureCapacity(size +1);
+
+        // Shift elements right
+        if (size - index >= 0) {
+            System.arraycopy(theData, index, theData, index + 1, size - index);
         }
-        // Shift data in elements from index to size - 1
-        for (int i = size; i > index; i--) {
-            theData[i] = theData[i - 1];
-        }
+
         theData[index] = anEntry;  // Insert the new item.
         size++;
         modCount++;  // increment mod count, used for fail-fast iterator (PART B)
